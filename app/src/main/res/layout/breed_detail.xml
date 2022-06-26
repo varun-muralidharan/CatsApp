@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    android:elevation="4dp"
+    app:cardCornerRadius="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/catItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/cat_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:minHeight="@dimen/cat_image_min_height_large"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fallback_image"
+            app:layout_constraintBottom_toTopOf="@id/cat_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/cat_favorite"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?android:attr/actionBarItemBackground"
+            android:padding="4dp"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:tint="@color/teal_700"
+            app:layout_constraintBottom_toTopOf="@id/cat_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cat_image"
+            tools:src="@drawable/ic_baseline_favorite_24" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/cat_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cat_image"
+            tools:text="Cat Name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cat_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cat_name"
+            tools:text="This is a long text describing what this cat's super powers are all about." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
