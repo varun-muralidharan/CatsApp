@@ -28,7 +28,10 @@ class DetailViewModel @Inject constructor(
                 localRepository.getBreed(id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
-                    .map { it.toBreedDetail(favoriteId) }
+                    .map {
+                        listenToFavorites(it.image?.id)
+                        it.toBreedDetail(favoriteId)
+                    }
                     .subscribe(
                         {
                             CLog.d(TAG, "load", "onSuccess: breed: $it")
@@ -37,31 +40,33 @@ class DetailViewModel @Inject constructor(
                         { CLog.d(TAG, "load", "onError: ${it.message}") },
                     )
             )
-
-            compositeDisposable.add(
-                localRepository.getFavorites()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .distinctUntilChanged()
-                    .subscribe(
-                        { entities ->
-                            CLog.d(TAG, "load", "onNext: $entities")
-                            val entity = entities.firstOrNull { it.imageId == id }
-                            val detail = _breed.value?.filterIsInstance<DetailUi.BreedDetail>()
-                                ?.firstOrNull()
-                                ?.copy(favoriteId = entity?.favoriteID ?: -1)
-                            detail?.let {
-                                _breed.postValue(_breed.value?.toMutableList()?.apply {
-                                    removeAt(0)
-                                    add(0, detail)
-                                })
-                            }
-                        },
-                        { CLog.d(TAG, "load", "onError: ${it.message}") },
-                        { CLog.d(TAG, "load", "onComplete") }
-                    )
-            )
         }
+    }
+
+    private fun listenToFavorites(imageId: String?) {
+        compositeDisposable.add(
+            localRepository.getFavorites()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .distinctUntilChanged()
+                .subscribe(
+                    { entities ->
+                        CLog.d(TAG, "listenToFavorites", "onNext: $entities")
+                        val entity = entities.firstOrNull { it.imageId == imageId }
+                        val detail = _breed.value?.filterIsInstance<DetailUi.BreedDetail>()
+                            ?.firstOrNull()
+                            ?.copy(favoriteId = entity?.favoriteID ?: -1)
+                        detail?.let {
+                            _breed.postValue(_breed.value?.toMutableList()?.apply {
+                                removeAt(0)
+                                add(0, detail)
+                            })
+                        }
+                    },
+                    { CLog.d(TAG, "listenToFavorites", "onError: ${it.message}") },
+                    { CLog.d(TAG, "listenToFavorites", "onComplete") }
+                )
+        )
     }
 
     override fun onCleared() {
